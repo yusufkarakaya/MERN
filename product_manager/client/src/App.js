@@ -1,11 +1,16 @@
 import './App.css';
-import Form from './components/Form/Form';
+import Main from './components/Main/Main';
+import DetailProduct from './components/DetailProduct/DetailProduct';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
 function App() {
   return (
-    <div className='App'>
-      <Form />
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route path='/api' element={<Main />} />
+        <Route path='/api/product/:id' element={<DetailProduct />} />
+      </Routes>
+    </BrowserRouter>
   );
 }
 

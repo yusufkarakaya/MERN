@@ -4,7 +4,16 @@ import './ListProduct.css';
 import axios from 'axios';
 
 const ListProduct = (props) => {
-  const { product, setProduct } = props;
+  const { removeFromDom, product, setProduct } = props;
+
+  const deleteProduct = (productId) => {
+    axios
+      .delete('http://localhost:8000/api/product/' + productId)
+      .then((res) => {
+        removeFromDom(productId);
+      })
+      .catch((err) => console.log(err));
+  };
 
   useEffect(() => {
     axios
@@ -26,6 +35,13 @@ const ListProduct = (props) => {
           <div key={index}>
             <p>
               <Link to={`/api/product/${product._id}`}>{product.title}</Link>
+              {' | '}
+              <Link to={`/api/update/${product._id}`}> Edit</Link>
+              {' | '}
+              <button onClick={(e) => deleteProduct(product._id)}>
+                {' '}
+                Delete
+              </button>
             </p>
             <hr />
           </div>

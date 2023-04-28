@@ -1,27 +1,32 @@
 import React, { useState } from 'react';
 import './Form.css';
-import axios from 'axios';
 
 const Form = (props) => {
-  const { product, setProduct } = props;
-  const [title, setTitle] = useState('');
-  const [price, setPrice] = useState('');
-  const [description, setDescription] = useState('');
+  const { onSubmitProp, initialTitle, initialPrice, initialDescription } =
+    props;
+  const [product, setProduct] = useState({
+    title: initialTitle,
+    price: initialPrice,
+    description: initialDescription,
+  });
 
   const onSubmitHandler = (e) => {
     e.preventDefault();
-    axios
-      .post('http://localhost:8000/api/product', {
-        title: title,
-        price: price,
-        description: description,
-      })
-      .then((res) => {
-        console.log(res.data);
-        setProduct([...product, res.data]);
-      })
-      .catch((err) => console.log(err));
+    onSubmitProp({
+      title: product.title,
+      price: product.price,
+      description: product.description,
+    });
   };
+
+  const onInputChange = (e) => {
+    const { name, value } = e.target;
+    setProduct((prevProduct) => ({
+      ...prevProduct,
+      [name]: value,
+    }));
+  };
+
   return (
     <div className='main'>
       <h1>Product Manager</h1>
@@ -31,7 +36,8 @@ const Form = (props) => {
           <input
             type='text'
             name='title'
-            onChange={(e) => setTitle(e.target.value)}
+            value={product.title}
+            onChange={onInputChange}
           />
         </div>
         <div className='form-group'>
@@ -39,7 +45,8 @@ const Form = (props) => {
           <input
             type='text'
             name='price'
-            onChange={(e) => setPrice(e.target.value)}
+            value={product.price}
+            onChange={onInputChange}
           />
         </div>
         <div className='form-group'>
@@ -47,7 +54,8 @@ const Form = (props) => {
           <input
             type='text'
             name='description'
-            onChange={(e) => setDescription(e.target.value)}
+            value={product.description}
+            onChange={onInputChange}
           />
         </div>
         <div className='form-group'>

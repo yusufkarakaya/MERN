@@ -19,13 +19,12 @@ const ListProduct = (props) => {
     axios
       .get('http://localhost:8000/api/product')
       .then((res) => {
-        console.log(res.data);
         setProduct(res.data);
       })
       .catch((err) => {
         console.log(err);
       });
-  }, []);
+  }, [setProduct]);
 
   return (
     <div className='main'>
